@@ -1,0 +1,189 @@
+Getting Started
+
+This window contains information about everything in the game.
+
+You can move windows around by dragging and dropping the gray part of the window.
+You can move around by dragging anywhere outside the windows.
+
+To start programming, go to the "First Program" page by pressing the following 
+
+---
+
+First Program
+
+All programming is done in code windows. Each code window corresponds to a text file containing code. 
+The code can be edited like in any text editor as long as it's not running.
+You can execute the program directly by pressing the green play button in the code window.
+
+When you run a program the code flashes so you can see the execution flow.
+
+You can create more code files using the "+" button in the upper right corner of the screen.
+You can dock a window to another window by dragging it onto it.
+
+You will notice that once you start typing, a simple code completion window will pop up.
+Press Tab to insert the code completion.
+Use the arrow keys to navigate through the completion options.
+
+Don't worry if this is your first time programming. The language is unlocked step by step, so you won't be overwhelmed by all the things you can do. 
+The syntax is also similar to that of Python, which is one of the most widely used programming languages in the world, so learning it is not completely wasted.
+
+If you already know Python, it's not a problem either, you'll just be able to skip the early game quickly to get to the more interesting stuff.
+
+Code is a sequence of statements that are executed line by line.
+
+Currently, the only statements available are
+
+harvest()
+
+and 
+
+do_a_flip()
+
+These are function calls. A function is essentially a piece of functionality that can be executed. You execute it using the () parentheses.
+
+Try typing these statements in the code window and pressing the execute button.
+
+Unlocks
+
+Collecting grass will give you hay. Hay can be used to unlock loops in the unlock menu. Open the unlock menu with the button in the top right corner.
+
+---
+
+Move Drone
+
+Your farm has grown! This space is not much use if you can't move the drone, so there is a new function move() that moves the drone. move() requires that you specify the direction in which you want the drone to move. There are four new constants for this: North, East, South, West
+
+For example, move(North) will move the drone one square to the north.
+
+If you move over the edge of the farm the drone will be moved to the other side of the farm.
+The following example code will keep moving north and wrap back to the start when it reaches the edge of the farm:
+
+while True:
+	move(North)
+
+---
+
+Plants
+
+Grass is nice because it grows automatically. All other plants have to be planted with the plant() function. The only plant you can plant right now is a bush.
+You can pass the type of plant you want to plant to the function like this:
+
+plant(Entities.Bush)
+
+This will plant a bush under the drone.
+
+Call clear() to reset the farm to all grass and reset the drone position.
+
+---
+
+For Loop
+
+Your farm has expanded again! Now the tiles are no longer in a nice row, so you need to find a way to traverse a square grid.
+
+With the while loop this is simply not possible (at least until you unlock senses).
+It is time to introduce the for loop.
+
+The for loop works just like the for loop in Python. (Called a foreach loop in some languages, not to be confused with the C-style for loop, which is a different thing). 
+It must be given a sequence to iterate over:
+
+for i in sequence:
+	#do something with i
+
+Currently the only way to get such a sequence is through the range() function. 
+range(n) returns a sequence containing numbers from 0 to n(exclusive) in steps of 1.
+range(start, end) returns a sequence containing numbers from start to end(exclusive) in steps of 1.
+range(start, end, step_size) returns a sequence containing numbers from start to end(exclusive) in steps of step_size.
+
+So what's mainly useful right now is being able to run some code exactly n times like this:
+
+#do n flips
+for i in range(n):
+	do_a_flip()
+
+The function get_world_size() is also available now. It returns the side length of your farm. This way you can write code that won't break with the next expand upgrade.
+
+If you're stuck on trying to figure out how to move the drone around the farm click the spoiler for a hint.
+
+There are, of course, several ways to move around the farm.
+What we're looking for is a way to traverse it in a systematic way that won't break when the farm grows again.
+A systematic way to get to every place on the farm would be to repeat the following 2 steps forever:
+
+1.Move North until it wraps back.
+2.Move East
+
+for i in range(get_world_size()): may be helpful to turn this idea into code.
+
+The basic traversal might look like this:
+
+for i in range(get_world_size()):
+	for j in range(get_world_size()):
+		#do a flip on every tile
+		do_a_flip()
+		move(North)
+	move(East)
+
+---
+
+Senses
+
+The drone can see now! 
+
+The functions get_pos_x() and get_pos_y() return the current x and y position of the drone. At the start position they are both 0. The x position increases by 1 every tile towards East and the y position increases by 1 every tile towards North.
+
+num_items(item) returns how many of an item you have.
+For example num_items(Items.Hay) returns how much hay you have.
+
+get_entity_type() and get_ground_type() return the type of entity or ground that is under the drone. Once you have unlocked Operators you can check if the drone is over a specific entity or ground:
+
+Do a flip if you are over a bush:
+if get_entity_type() == Entities.Bush:
+	do_a_flip()
+
+The None keyword is also unlocked now! None is a value that represents that there is no value.
+For example, a function that has no return statement will actually return None.
+
+get_entity_type() returns None if there is no entity under the drone.
+
+---
+
+Carrots
+
+Before you can plant carrots with plant(Entities.Carrots), you have to do two new things. First, carrots can only grow on tilled soil. To till the soil, simply call till(). Calling till() again will change it back to Grounds.Turf.
+
+The second new feature is that carrots need seeds to grow. You can buy carrot seeds with the new trade() function.
+You have to pass an item type to trade() like this: trade(Items.Carrot_Seed)
+
+If the item can be bought, then it will be bought with this.
+
+You can see the cost of any item in its tooltip. The tooltip appears when you mouse over the item itself or the item name in the code.
+
+---
+
+Pumpkins
+
+Pumpkins grow like carrots on tilled soil. They require pumpkin seeds to be planted, which cost one carrot each.
+
+When all the pumpkins in a field are fully grown, they grow together to form a giant pumpkin. The yield of a giant pumpkin is the cubed side length of the pumpkin.
+
+A 2x2 pumpkin yields 2*2*2 = 8 pumpkins instead of 4
+A 3x3 pumpkin yields 3*3*3 = 27 pumpkins instead of 9
+A 4x4 pumpkin yields 4*4*4 = 64 pumpkins instead of 16
+...
+
+It's a good idea to get the pumpkins as big as possible before harvesting. The problem is that about 1 in 5 pumpkins will die before they grow up. This means that even if you plant a pumpkin on every tile in a square, one of the pumpkins may die and prevent the mega pumpkin from growing. A pumpkin that dies will simply disappear so you can plant a new one.
+
+---
+
+Trees
+
+Trees are a better way to get wood than bushes. They give 5 wood each. Like bushes, they can be planted on grass or soil.
+
+Trees like to have some space and planting them right next to each other will slow down their growth. The growing time is doubled for each tree that is on a tile directly to the North, East, West or South of it. So if you plant trees on every tile, they will take 2*2*2*2 = 16 times longer to grow.
+
+ The % operator can be useful here. Remember that the % operator returns the remainder of the division. Even numbers divided by 2 have a remainder of 0 and odd numbers divided by 2 have a remainder of 1.
+So you can check if a number is even like this:
+
+def is_even(n):
+	return n % 2 == 0
+
+This returns True if n is even and False if it isn't.
