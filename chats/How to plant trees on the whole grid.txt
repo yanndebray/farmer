@@ -1,0 +1,17 @@
+To plant trees (or any plant) on the entire grid, you can use nested loops to traverse every tile on the grid and call the `plant(Entities.Tree)` function at each position. Here's a basic example of how you can do it:
+
+```python
+world_size = get_world_size()
+
+for x in range(world_size):
+    for y in range(world_size):
+        plant(Entities.Tree)
+        if y < world_size - 1:  # Don't move north after the last row
+            move(North)
+    if x < world_size - 1:  # Don't move east after the last column
+        move(East)
+        for _ in range(world_size - 1):  # Move back south to the first row
+            move(South)
+```
+
+This code will traverse the grid row by row, planting a tree at each position. Make sure to adjust the logic if you have different dimensions or additional constraints.

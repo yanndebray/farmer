@@ -1,0 +1,55 @@
+To plant pumpkins in the game, you need to follow these steps:
+
+1. **Till the Soil**: Pumpkins can only grow on tilled soil.
+2. **Buy Pumpkin Seeds**: You need pumpkin seeds, which can be bought using the `trade()` function.
+3. **Plant the Pumpkins**: Use the `plant()` function to plant the pumpkin seeds.
+
+Here's a detailed example of how to plant pumpkins:
+
+1. **Till the Soil**:
+   ```python
+   till()
+   ```
+
+2. **Buy Pumpkin Seeds**:
+   ```python
+   trade(Items.Pumpkin_Seed)
+   ```
+
+3. **Plant the Pumpkins**:
+   ```python
+   plant(Entities.Pumpkin)
+   ```
+
+Here’s a more comprehensive example that demonstrates how to till the soil, buy pumpkin seeds, and plant pumpkins in a grid pattern across the entire farm:
+
+```python
+# Tilling the soil and then planting pumpkins in a grid pattern
+
+# Get the size of the farm
+size = get_world_size()
+
+# Ensure we have enough seeds
+for i in range(size * size):
+    trade(Items.Pumpkin_Seed)
+
+# Plant pumpkins on each tile
+for i in range(size):
+    for j in range(size):
+        till()
+        plant(Entities.Pumpkin)
+        if j < size - 1:
+            move(North)  # Move north except after the last column
+    if i < size - 1:
+        # Move to the next column
+        move(East)
+        for k in range(size):
+            move(South)  # Move back to the starting row
+```
+
+In this example, the drone will:
+- Till the soil on each tile.
+- Plant a pumpkin seed on each tile.
+- Move across the farm in a systematic way, ensuring all tiles are covered.
+
+This way, you’ll have pumpkins planted across your entire farm. Be cautious about the growing times and neighboring pumpkins, as too many adjacent pumpkins can affect growth. For more advanced patterns, you might need to stagger or space out the pumpkin planting to optimize growth.

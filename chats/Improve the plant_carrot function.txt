@@ -1,0 +1,47 @@
+To improve the `plant_carrots` function and make it more efficient, we should:
+
+1. Ensure that the function completes the task for a specified number of plots to avoid an infinite loop.
+2. Correct any logic errors or inefficiencies in the current implementation.
+3. Modularize the code to make it more readable and maintainable.
+
+Here is an improved version of the `plant_carrots` function:
+
+```python
+def till_soil(steps):
+    for _ in range(steps):
+        if get_ground_type() != Grounds.Soil:
+            till()
+        move(North)
+
+def plant_on_soil(steps, seed_type, plant_type):
+    for _ in range(steps):
+        if get_ground_type() == Grounds.Soil:
+            place(seed_type)
+            plant(plant_type)
+        move(North)
+
+def plant_carrots():
+    steps = 3  # Assuming step count for clarity, can be parameterized
+    while True:
+        for _ in range(steps):
+            harvest()
+        till_soil(steps)
+        plant_on_soil(steps, Items.Carrot_Seed, Entities.Carrot)
+        move(East)
+
+plant_carrots()
+```
+
+### Explanation:
+1. **Modularization:**
+   - The `till_soil` function tills the soil for a given number of steps.
+   - The `plant_on_soil` function plants seeds on the tilled soil for the given number of steps.
+   - Dividing the code into smaller functions makes it easier to manage, maintain, and reuse.
+
+2. **Parameterization:**
+   - The number of steps is set to 3 for simplicity, but it can be parameterized for flexibility.
+
+3. **Efficiency:**
+   - By checking the ground type before tilling and planting, the code avoids unnecessary actions.
+
+This structure helps in handling soil, planting, and moving logic more effectively, ensuring carrots are planted in an organized manner across specified plots.
