@@ -212,3 +212,12 @@ Executing other code statements can also use power but a lot less than drone act
 In general, everything that is sped up by speed upgrades is also sped up by power.
 Anything sped up by power also uses power proportional to the time it takes to execute it, ignoring speed upgrades.
 
+---
+
+Fertilizer
+
+At some point, waiting for the plants to grow is just not efficient enough anymore. 
+Fertilizer can make plants grow much faster. use_item(Items.Fertilizer) will instantly grow the plant under the drone by 2 seconds.
+Fertilizer can be bought with trade(Items.Fertilizer).
+
+Using fertilizer dries up the ground. The water speed buff will still apply while the fertilizer is being used, but after that, the water level on the ground will be reduced to 0.
