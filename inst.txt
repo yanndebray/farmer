@@ -253,3 +253,32 @@ Note that loops in the maze make it much more difficult so if you are a beginner
 
 The same maze can be solved a maximum of 300 times. This corresponds to 299 relocations. After that, fertilizing the treasure won't have any effect anymore.
 
+Here's a general approach to solving the problem:
+
+Create a maze and imagine that you are the drone.
+
+Think about how you would try to find the treasure if you were in the maze.
+
+Write down your strategy step by step so that someone else could follow it without thinking.
+
+Now try translating your steps into code.
+
+For mazes without cycles: All the walls are really just one large connected wall. If you follow the wall, it will lead you through the whole maze.
+
+It may be helpful to keep track of the direction the drone is going. The following index trick could be helpful for this:
+
+directions = [North, East, South, West]
+index = 0
+
+# rotate right
+# the % 4 makes it wrap around
+index = (index + 1) % 4
+
+# rotate left
+index = (index - 1) % 4
+
+move(directions[index])
+
+If you can't solve it, you can always make your life easy and do it less efficiently. 
+You don't have to be able to reach the treasure every time, you can always harvest and spawn a new maze.
+There is even a small chance that the treasure will appear right under the drone when you create a maze.
