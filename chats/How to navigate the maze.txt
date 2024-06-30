@@ -1,0 +1,52 @@
+To navigate the maze shown in the image and reach the treasure, you can implement the following steps. This process essentially follows the right-hand rule for maze-solving, where you follow the wall on your right-hand side.
+
+### Steps to Navigate the Maze
+
+1. **Initialize Directions**: Define your direction array.
+   ```python
+   directions = [North, East, South, West]
+   index = 0  # Assuming the drone starts facing North.
+   ```
+
+2. **Check if Move is Possible**: Write a function to attempt a move and update the drone's position.
+   ```python
+   def try_move(direction):
+       success = move(direction)
+       return success
+   ```
+
+3. **Maze Navigating Strategy**: Follow the wall on your right. If you can't move right, try moving straight, left, or backtrack if necessary.
+   ```python
+   while True:
+       # Rotate right
+       index = (index + 1) % 4
+       
+       # Try to move in the new direction
+       if not try_move(directions[index]):
+           # If right is blocked, rotate back to the original direction and move straight
+           index = (index - 1) % 4
+           if not try_move(directions[index]):
+               # If straight is blocked, rotate left and move
+               index = (index - 1) % 4
+               if not try_move(directions[index]):
+                   # If left is blocked, rotate left again and move back
+                   index = (index - 1) % 4
+                   try_move(directions[index])
+   
+       # Check if we have found the treasure
+       if get_entity_type() == Entities.Treasure:
+           harvest()
+           break  # Exit once the treasure is harvested       
+   ```
+
+### Explanation
+
+1. **Direction Array**: The `directions` list holds the possible movements (North, East, South, West). The `index` keeps track of the current direction the drone is facing.
+2. **Movement Function (`try_move`)**: This function calls the `move()` function and returns whether the move was successful.
+3. **Main Loop**: This loop follows the right-hand rule to navigate the maze:
+    - Rotate the drone right and attempt to move.
+    - If the right side is blocked, return to your original direction and try to move straight.
+    - If straight is blocked, rotate left and attempt to move.
+    - If the left side is blocked, rotate left again (now facing the opposite of the original direction) and try to move back.
+
+This strategy ensures that the drone methodically explores the maze and eventually finds the treasure. The loop exits when `get_entity_type()` confirms the drone is over the treasure, at which point `harvest()` is called to collect it.
